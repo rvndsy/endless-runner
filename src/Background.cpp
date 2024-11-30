@@ -4,33 +4,45 @@
 #include <iostream>
 #include "../include/Background.hpp"
 #include "../include/Definitions.hpp"
-#include "../include/Game.hpp"
-
-Background::Background() {
-    if(!spriteTexture.loadFromFile(BACKGROUND_SPRITE)) {
-        std::cout << "Error reading background file!" << std::endl;
-    }
-    sprite = sf::Sprite();
-    Background::init();
-}
 
 bool Background::init() {
-    sf::Vector2u size = spriteTexture.getSize();
-    sprite.setTexture(spriteTexture);
-    sprite.setOrigin(0, 0);
-    sprite.setColor(sf::Color(255, 255, 255, 255)); //set transparent at last value
+    if(!bgTexture.loadFromFile(BACKGROUND_SPRITE)) {
+        std::cout << "Error reading background file!" << std::endl;
+        return 0;
+    }
+    if(!groundTexture.loadFromFile(GROUND_SPRITE)) {
+        std::cout << "Error reading background file!" << std::endl;
+        return 0;
+    }
+    sf::Vector2u size = bgTexture.getSize();
+    bgSprite.setTexture(bgTexture);
+    bgSprite.setOrigin(0, 0);
+    bgSprite.setScale(SPRITE_SCALING, SPRITE_SCALING);
+    bgSprite.setColor(sf::Color(255, 255, 255, 255)); //set transparent at last value
+
+    groundSprite.setTexture(groundTexture);
+    groundSprite.setOrigin(0, -313);
+    groundSprite.setScale(SPRITE_SCALING, SPRITE_SCALING);
+    groundSprite.setColor(sf::Color(255, 255, 255, 255)); //set transparent at last value
     return 1;
 }
-// Background is a png of the same image duplicated twice horizontally
+// Background and Ground is a png of the same image duplicated twice horizontally
 void Background::update(float deltaTime) {
-    if (fabs(sprite.getPosition().x) >= sprite.getTexture()->getSize().x / 2.f) {
+    // Moving background sprite
+    if (fabs(bgSprite.getPosition().x) >= bgSprite.getTexture()->getSize().x) { // image is scaled up 2x and we need to get half the width so we avoid adding `/ 2.f` at the end
         std::cout << "Resetting background x position!" << std::endl;
-        sprite.setPosition(0, 0);
+        bgSprite.setPosition(0, 0);
     } else {
-        sprite.move(BG_MOVE_RATE * deltaTime, 0);
-        sf::sleep(sf::milliseconds(10));
-        //std::cout << sprite.getTexture()->getSize().x << std::endl;
+        bgSprite.move(bgVelocity * -deltaTime, 0);
+        bgVelocity += deltaTime * BG_ACCELERATION_RATE;
     }
-    //std::cout << sprite.getPosition().x << std::endl;
-    std::cout << deltaTime << std::endl;
+
+    // Moving ground sprite
+    if (fabs(groundSprite.getPosition().x) >= groundSprite.getTexture()->getSize().x) { // image is scaled up 2x and we need to get half the width so we avoid adding `/ 2.f` at the end
+        std::cout << "Resetting ground x position!" << std::endl;
+        groundSprite.setPosition(0, 0);
+    } else {
+        groundSprite.move(groundVelocity * 1.5f * -deltaTime, 0);
+        groundVelocity += deltaTime * BG_ACCELERATION_RATE;
+    }
 }

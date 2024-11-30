@@ -1,5 +1,6 @@
 set(LIBS
     Game
+    Physics
     Background
     Player
     Entity

@@ -1,14 +1,19 @@
 #pragma once
 
+#include "Definitions.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+// bg == background
 class Background {
 public:
-    Background();
     void update(float deltaTime);
     bool init();
-    sf::Sprite sprite;
+    sf::Sprite bgSprite;
+    sf::Sprite groundSprite;
 private:
-    sf::Texture spriteTexture;
+    float bgVelocity = BG_MOVE_RATE;
+    float groundVelocity = BG_MOVE_RATE;
+    sf::Texture bgTexture;
+    sf::Texture groundTexture;
 };

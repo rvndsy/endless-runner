@@ -4,6 +4,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/WindowStyle.hpp>
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
@@ -12,17 +13,18 @@
 #include "../include/Background.hpp"
 #include "../include/Player.hpp"
 #include "../include/Definitions.hpp"
+#include "../include/Physics.hpp"
 
-Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!") {
+Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Game", Style::Close) {
     std::cout << "Started game!" << std::endl;
-    //window.setFramerateLimit(300); // NOTE: Probably wont do this, remove later
+    window.setFramerateLimit(240); // Limiting frame rate to some sane value
 }
 
 void Game::run() {
     initialize();
     while (window.isOpen())
     {
-        float deltaTime = constantClock.restart().asSeconds();
+        deltaTime = constantClock.restart().asSeconds();
         pollGlobalEvents();
         update();
         draw();
@@ -34,7 +36,7 @@ void Game::initialize() {
         std::cout << "Failed to initialize background!" << std::endl;
         return;
     }
-    Player * player = new Player(Vector2(0, 0));
+    Player * player = new Player(Vector2(PLAYER_START_X, 0.f), Vector2(0.f, 0.f));
     if (player == nullptr) {
         std::cout << "Failed to initialize player!" << std::endl;
         return;
@@ -56,16 +58,19 @@ void Game::pollGlobalEvents() {
 // TODO: Add some sort of entity list
 //       Add a constant clock rate
 void Game::update() {
-    std::cout << deltaTime << std::endl;
     background.update(deltaTime);
     for (auto &entity : entities) {
         entity->update(deltaTime);
+    }
+    for (auto &entity : entities) {
+        Physics::calculatePhysics(entity, deltaTime);
     }
 }
 
 void Game::draw() {
     window.clear(sf::Color::Black);
-    window.draw(background.sprite);
+    window.draw(background.bgSprite);
+    window.draw(background.groundSprite);
     for (auto &entity : entities) {
         window.draw(entity->getSprite());
     }
