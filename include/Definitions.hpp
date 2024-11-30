@@ -9,7 +9,6 @@ constexpr int WINDOW_HEIGHT = 720;
 constexpr int WINDOW_WIDTH = 1280;
 constexpr int GROUND_HEIGHT = 200; //px from the bottom of screen
 
-
 // Sprites
 #define SPRITE_DIR_PATH "../sprites/"
 #define BACKGROUND_SPRITE SPRITE_DIR_PATH "background.png"
@@ -23,3 +22,7 @@ constexpr int PLAYER_START_SCALE_Y = 2;
 // Player sprites
 #define PLAYER_SPRITE SPRITE_DIR_PATH "player.png"
 #define PLAYER_CROUCHING_SPRITE SPRITE_DIR_PATH "player-crouching.png"
+
+// Physics values - PIXELS PER SECOND
+// Background
+constexpr float BG_MOVE_RATE = -500.0f;

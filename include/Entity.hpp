@@ -8,8 +8,9 @@ using namespace sf;
 class Entity {
 public:
     Entity(Vector2<int> position) : position(position) {};
+    virtual ~Entity() {};
     Sprite getSprite() {return *activeSprite;};
-    virtual void update() = 0; // = 0 means the function is pure virtual
+    virtual void update(float deltaTime) = 0; // = 0 means the function is pure virtual
 
     virtual bool initSprite(std::string spritePath); // TODO: This is a mess...
 protected:

@@ -6,7 +6,7 @@
 class Background {
 public:
     Background();
-    void update();
+    void update(float deltaTime);
     bool init();
     sf::Sprite sprite;
 private:

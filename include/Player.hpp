@@ -9,7 +9,8 @@ enum PlayerState { normal, crouching, jumping };
 class Player : public Entity {
 public:
     Player(Vector2<int> position);
-    void update();
+    ~Player() {return;};
+    void update(float deltaTime);
     void updateActiveSprite();
     //bool initSprite();
     //void setState(PlayerState state) {this->state = state;};

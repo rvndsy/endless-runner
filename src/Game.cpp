@@ -15,12 +15,14 @@
 
 Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!") {
     std::cout << "Started game!" << std::endl;
+    //window.setFramerateLimit(300); // NOTE: Probably wont do this, remove later
 }
 
 void Game::run() {
     initialize();
     while (window.isOpen())
     {
+        float deltaTime = constantClock.restart().asSeconds();
         pollGlobalEvents();
         update();
         draw();
@@ -54,9 +56,10 @@ void Game::pollGlobalEvents() {
 // TODO: Add some sort of entity list
 //       Add a constant clock rate
 void Game::update() {
-    background.update();
+    std::cout << deltaTime << std::endl;
+    background.update(deltaTime);
     for (auto &entity : entities) {
-        entity->update();
+        entity->update(deltaTime);
     }
 }
 
@@ -69,13 +72,9 @@ void Game::draw() {
     window.display();
 }
 
-void Game::kill() {
+Game::~Game() {
     for (auto &entity : entities) {
         delete entity;
     }
     window.close();
-}
-
-Game::~Game() {
-    kill();
 }

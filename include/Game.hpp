@@ -15,9 +15,11 @@ public:
     void run();
 private:
     std::vector<Entity*> entities;
-    sf::Clock clock;
+    sf::Clock constantClock;
+    sf::Clock perFrameClock;
     sf::RenderWindow window;
     Background background;
+    float deltaTime;
     void initialize();
     void pollGlobalEvents();
     void update();

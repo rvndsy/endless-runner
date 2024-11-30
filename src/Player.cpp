@@ -19,18 +19,18 @@ Player::Player(sf::Vector2<int> position) : Entity(position) {
     state = normal;
 }
 
-// TODO: Find a different way to not updateActiveSprite() every update()
-void Player::update() {
+// TODO: Find a way to control keypresses with polling in Game class and not check assign activeSprite every update()
+void Player::update(float deltaTime) {
     if (Keyboard::isKeyPressed(Keyboard::S)) {
-        std::cout << "Crouch!" << std::endl;
+        //std::cout << "Crouch!" << std::endl;
         state = crouching;
         activeSprite = &crouchingSprite;
     } else if (Keyboard::isKeyPressed(Keyboard::W)) {
-        std::cout << "Jump!" << std::endl;
+        //std::cout << "Jump!" << std::endl;
         state = jumping;
         //activeSprite = &jumpingSprite;
     } else {
-        std::cout << "Return to normal" << std::endl;
+        //std::cout << "Return to normal" << std::endl;
         state = normal;
         activeSprite = &defaultSprite;
     }
