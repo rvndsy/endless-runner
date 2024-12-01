@@ -7,7 +7,7 @@
 // Global values
 constexpr int WINDOW_HEIGHT = 720;
 constexpr int WINDOW_WIDTH = 1280;
-constexpr int GROUND_HEIGHT = WINDOW_HEIGHT-148.f; //px from the bottom of screen
+constexpr int GROUND_HEIGHT = WINDOW_HEIGHT-148; //px from the bottom of screen
 // Physics global values
 constexpr float GRAVITY_ACCEL = 10.f;  //px per sec^2
 constexpr float GRAVITY_MULTIPLIER = 100.f;  //to make falling faster (more fun)
@@ -21,5 +21,5 @@ constexpr float SPRITE_SCALING = 2.f;
 
 // PHYSICS VALUES - PIXELS PER SECOND
 // Background
-constexpr float BG_MOVE_RATE = 100.0f;
-constexpr float BG_ACCELERATION_RATE = 5.0f;
+constexpr float BG_START_VELOCITY = -500.0f;
+constexpr float BG_ACCELERATION_RATE = -5.0f;

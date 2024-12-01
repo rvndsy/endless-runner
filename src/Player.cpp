@@ -1,62 +1,83 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Sleep.hpp>
+#include <SFML/System/Time.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
-#include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include "../include/Player.hpp"
 
 Player::Player(sf::Vector2<float> position, sf::Vector2<float> velocity) : Entity(position, velocity) {
-    Entity::initSprite(PLAYER_SPRITE);
-    defaultSprite.setPosition(this->position.x, this->position.y);
-    defaultSprite.setScale(SPRITE_SCALING, SPRITE_SCALING);
+    sprites.resize(4);
+    textures.resize(4);
+    if (!textures[normal].loadFromFile(PLAYER_SPRITE)) {
+        throw std::runtime_error("Player - defaultTexture.loadFromFile: Error reading loading sprite file!\n");
+    }
+    if (!textures[crouching].loadFromFile(PLAYER_CROUCHING_SPRITE)) {
+        throw std::runtime_error("Player - crouchingTexture.loadFromFile: Error loading sprite file!\n");
+    }
+    if (!textures[ascending].loadFromFile(PLAYER_ASCENDING_SPRITE)) {
+        throw std::runtime_error("Player - jumpingTexture.loadFromFile: Error loading sprite file!\n");
+    }
+    if (!textures[falling].loadFromFile(PLAYER_FALLING_SPRITE)) {
+        throw std::runtime_error("Player - fallingTexture.loadFromFile: Error loading sprite file!\n");
+    }
 
-    crouchingTexture.loadFromFile(PLAYER_CROUCHING_SPRITE);
-    crouchingSprite.setTexture(crouchingTexture);
-    crouchingSprite.setScale(SPRITE_SCALING, SPRITE_SCALING);
+    for (size_t i = 0; i < sprites.size(); i++) {
+        sprites[i].setTexture(textures[i]);
+        sprites[i].setScale(SPRITE_SCALING, SPRITE_SCALING);
+    }
 
-    jumpingTexture.loadFromFile(PLAYER_ASCENDING_SPRITE);
-    jumpingSprite.setTexture(jumpingTexture);
-    jumpingSprite.setScale(SPRITE_SCALING, SPRITE_SCALING);
+    // Setting origin to middle of each sprite with the exception of sprites[falling], it is 6 pixels taller and crouching is much wider and shorter
+    sprites[normal].setOrigin(sprites[normal].getLocalBounds().width / 2, sprites[normal].getLocalBounds().height / 2);
+    sprites[crouching].setOrigin(sprites[crouching].getLocalBounds().width / 2 - 8.f, sprites[crouching].getLocalBounds().height / 2 - 11.f);
+    sprites[ascending].setOrigin(sprites[ascending].getLocalBounds().width / 2, sprites[ascending].getLocalBounds().height / 2);
+    sprites[falling].setOrigin(sprites[falling].getLocalBounds().width / 2, sprites[falling].getLocalBounds().height / 2 + 3.f);
 
-    fallingTexture.loadFromFile(PLAYER_FALLING_SPRITE);
-    fallingSprite.setTexture(fallingTexture);
-    fallingSprite.setScale(SPRITE_SCALING, SPRITE_SCALING);
-
-    // Setting origin to middle of each sprite with the exception of fallingSprite, it is 6 pixels taller and crouching is much wider and shorter
-    defaultSprite.setOrigin(defaultSprite.getLocalBounds().width / 2, defaultSprite.getLocalBounds().height / 2);
-    crouchingSprite.setOrigin(crouchingSprite.getLocalBounds().width / 2 - 8.f, crouchingSprite.getLocalBounds().height / 2 - 11.f);
-    jumpingSprite.setOrigin(jumpingSprite.getLocalBounds().width / 2, jumpingSprite.getLocalBounds().height / 2);
-    fallingSprite.setOrigin(fallingSprite.getLocalBounds().width / 2, fallingSprite.getLocalBounds().height / 2 + 3.f);
 
     state = normal;
+    activeSprite = &sprites[normal];
 }
 
-// TODO: Find a way to control keypresses with polling in Game class and not check assign activeSprite every update()
+// TODO: Find a way to control keypresses with polling in Game class and not assign activeSprite every update()
 void Player::update(float deltatime) {
+    if (Keyboard::isKeyPressed(Keyboard::S) && position.y < GROUND_HEIGHT) {
+        switchState(crouching);
+        acceleration.y = PUSH_DOWN_FORCE;
+        //std::cout << "PUSHING DOWN!" << std::endl;
+        return;
+    }
+    acceleration.y = 0.f;
     if (velocity.y > 0) {
-        state = falling;
-        activeSprite = &fallingSprite;
+        switchState(falling);
         return;
     } else if (velocity.y < 0) {
-        state = jumping;
-        activeSprite = &jumpingSprite;
+        switchState(ascending);
         return;
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
         //std::cout << "Crouch!" << std::endl;
-        state = crouching;
-        activeSprite = &crouchingSprite;
+        switchState(crouching);
+        return;
     } else if (Keyboard::isKeyPressed(Keyboard::W)) {
         //std::cout << "Jump!" << std::endl;
-        state = jumping;
-        activeSprite = &jumpingSprite;
-        if (position.y >= GROUND_HEIGHT) {
-            velocity.y = -700.f;
-        }
-    } else {
-        //std::cout << "Return to normal" << std::endl;
-        state = normal;
-        activeSprite = &defaultSprite;
+        jump();
+        return;
+    }
+    switchState(normal);
+}
+
+void Player::switchState(PlayerState state) {
+    this->state = state;
+    activeSprite = &sprites[state];
+}
+
+void Player::jump() {
+    switchState(ascending);
+    if (position.y >= GROUND_HEIGHT) {
+        acceleration.y = 0.f;
+        velocity.y = JUMP_VELOCITY;
     }
 }

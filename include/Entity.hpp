@@ -10,11 +10,11 @@ class Entity {
 public:
     Entity(Vector2<float> position, Vector2<float> velocity) : position(position.x, position.y+GROUND_HEIGHT), velocity(velocity) {}; // GROUND_HEIGHT effectively becomes y = 0
     virtual ~Entity() {};
-    Sprite getSprite() {return *activeSprite;};
+    virtual Sprite getSprite() {return *activeSprite;};
     void updateEntityPos() {activeSprite->setPosition(position.x, position.y);};
     virtual void update(float deltaTime) = 0; // = 0 means the function is pure virtual
+    virtual void update(float deltaTime, float backgroundVelocity) = 0;
 
-    virtual bool initSprite(std::string spritePath); // TODO: This is a mess...
     // Getters
     //sf::Vector2<float> getPosition() {return position;};
     //sf::Vector2<float> getVelocity() {return velocity;};
@@ -38,5 +38,4 @@ protected:
     Texture defaultTexture;
     Sprite defaultSprite;
     Sprite * activeSprite;
-private:
 };

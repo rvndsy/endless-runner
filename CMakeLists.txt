@@ -3,6 +3,7 @@ project(GAME)
 
 add_subdirectory(src)
 file(COPY ${CMAKE_SOURCE_DIR}/sprites DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/font DESTINATION ${CMAKE_BINARY_DIR})
 
 #if (UNIX)
 #    set(LD_LIBRARY_PATH "./linux/SFML-2.6.2/lib")
