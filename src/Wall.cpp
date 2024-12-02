@@ -1,7 +1,7 @@
-#include "../include/CrashedCar.hpp"
+#include "../include/Wall.hpp"
 
 // Update horizontal position synchronised with the background
-void CrashedCar::update(float deltaTime, float backgroundVelocity) {
+void Wall::update(float deltaTime, float backgroundVelocity) {
     position.x += deltaTime * backgroundVelocity;
     updateEntityPos();
 }

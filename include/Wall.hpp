@@ -3,11 +3,11 @@
 #include <SFML/System/Vector2.hpp>
 #include "Enemy.hpp"
 
-// CrashedCar is on the ground and is static relative to the background
-class CrashedCar : public Enemy {
+// Wall is on the ground and is static relative to the background
+class Wall : public Enemy {
 public:
-    CrashedCar(float backgroundVelocity) : Enemy(CRASHED_CAR_SPRITE, sf::Vector2f(0, 25.f), sf::Vector2f(backgroundVelocity, 0)) {};
-    ~CrashedCar() {};
+    Wall(float backgroundVelocity) : Enemy(WALL_SPRITE, sf::Vector2f(0, 0.f), sf::Vector2f(backgroundVelocity, 0)) {};
+    ~Wall() {};
     // Update horizontal position synchronised with the background
     void update(float deltaTime, float backgroundVelocity) override;
     void update(float deltaTime) override {}; //unused

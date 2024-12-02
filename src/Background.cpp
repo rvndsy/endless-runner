@@ -5,7 +5,8 @@
 #include "../include/Background.hpp"
 #include "../include/Definitions.hpp"
 
-Background::Background(float velocity) {
+// Creates ground and background sprites.
+Background::Background() {
     if(!backgroundTexture.loadFromFile(BACKGROUND_SPRITE)) {
         throw std::runtime_error("Background - backgroundTexture.loadFromFile: Error loading background sprite file!\n");
     }
@@ -19,11 +20,10 @@ Background::Background(float velocity) {
     backgroundSprite.setColor(sf::Color(255, 255, 255, 255)); //set transparent at last value
 
     groundSprite.setTexture(groundTexture);
-    groundSprite.setOrigin(0, -313);
+    groundSprite.setOrigin(0, -313);                        //ground sprite is set at the bottom
     groundSprite.setScale(SPRITE_SCALING, SPRITE_SCALING);
-    groundSprite.setColor(sf::Color(255, 255, 255, 255)); //set transparent at last value
+    groundSprite.setColor(sf::Color(255, 255, 255, 255));   //set transparent at last value
 }
-
 // Background and Ground is a png of the same image duplicated twice horizontally
 void Background::update(float deltaTime, float velocity) {
     // Moving background sprite

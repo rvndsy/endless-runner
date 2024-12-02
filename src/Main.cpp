@@ -1,7 +1,7 @@
 #include "../include/Game.hpp"
 
 int main() {
-    Game game;
-    game.run();
+    Game game;      // Create a new Game object
+    game.run();     // Initiate the Game loop
     return 0;
 }

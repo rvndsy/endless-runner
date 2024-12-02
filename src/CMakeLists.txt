@@ -21,8 +21,10 @@ add_library(Physics STATIC Physics.cpp)
 add_library(Background STATIC Background.cpp)
 add_library(CrashedCar STATIC CrashedCar.cpp)
 add_library(Bird STATIC Bird.cpp)
+add_library(Wall STATIC Wall.cpp)
 add_library(Player STATIC Player.cpp)
+add_library(Enemy STATIC Enemy.cpp)
 
-target_link_libraries(main PRIVATE Game Physics Background CrashedCar Bird Player)
+target_link_libraries(main PRIVATE Game Physics Background CrashedCar Bird Player Enemy Wall)
 
 #g++ main.o -o sfml-app -L"linux/SFML-2.6.2/lib" -lsfml-graphics -lsfml-window -lsfml-system
