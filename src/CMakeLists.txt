@@ -26,5 +26,3 @@ add_library(Player STATIC Player.cpp)
 add_library(Enemy STATIC Enemy.cpp)
 
 target_link_libraries(main PRIVATE Game Physics Background CrashedCar Bird Player Enemy Wall)
-
-#g++ main.o -o sfml-app -L"linux/SFML-2.6.2/lib" -lsfml-graphics -lsfml-window -lsfml-system
