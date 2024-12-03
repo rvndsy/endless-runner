@@ -4,5 +4,5 @@ mkdir -p build
 cmake -B build . &&
 cd build &&
 make &&
-cd src &&
+cd bin &&
 ./main

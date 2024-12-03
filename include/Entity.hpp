@@ -14,7 +14,7 @@ public:
     // Destructors are unused right now
     virtual ~Entity() {};
     // Retrieve the current sprite to display
-    virtual Sprite getSprite() {return *activeSprite;};
+    Sprite getSprite() {return *activeSprite;};
     // Update entity values and sprites while playing
     virtual void update(float deltaTime) = 0; // = 0 means the function is pure virtual
     // Enemies are synchronised with the background

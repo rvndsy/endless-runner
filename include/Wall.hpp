@@ -10,5 +10,4 @@ public:
     ~Wall() {};
     // Update horizontal position synchronised with the background
     void update(float deltaTime, float backgroundVelocity) override;
-    void update(float deltaTime) override {}; //unused
 };

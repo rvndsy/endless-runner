@@ -27,8 +27,6 @@ public:
     ~Player() {}; //empty implementation
     // Update player values
     void update(float deltaTime) override;
-    // Get the sprite of the current state
-    Sprite getSprite() override {return sprites[state];};
 
     void update(float deltaTime, float backgroundVelocity) override { update(deltaTime); }; //not used for Player
 private:

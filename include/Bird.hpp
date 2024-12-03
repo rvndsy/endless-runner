@@ -10,5 +10,4 @@ public:
     ~Bird() {};
     // Update bird horizontal position
     void update(float deltaTime, float backgroundVelocity) override;
-    void update(float deltaTime) override {}; // Unused
 };

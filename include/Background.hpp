@@ -8,11 +8,12 @@ using namespace sf;
 class Background {
 public:
     Background();
+    ~Background() {}; // not used
     void update(float deltaTime, float velocity);                       // updates both sprite positions per update(), background velocity is stored in Game class
     Sprite getBackgroundSprite() { return backgroundSprite; };          // for drawing sprite in Game
     Sprite getGroundSprite() { return groundSprite; };                  // for drawing sprite in Game
 private:
-    // background.png, ground.png sprites are stored in Background class
+    // background.png, ground.png sprites are stored in one Background class
     Texture backgroundTexture;
     Texture groundTexture;
     Sprite backgroundSprite;

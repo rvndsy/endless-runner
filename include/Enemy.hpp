@@ -15,6 +15,7 @@ public:
     ~Enemy() {};    // unused
     // Enemies are synchronised with the background on update.
     virtual void update(float deltaTime, float backgroundVelocity) = 0;
+    void update(float deltaTime) {};
 protected:
     // One texture and sprite per enemy
     Texture defaultTexture;
