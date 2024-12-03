@@ -242,20 +242,22 @@ void Game::drawPausedText() {
 }
 // Attempts to spawn a random Enemy every time enemySpawnCountdown hits 0, doesn't have 100% success rate on purpose
 void Game::spawnRandomEnemy() {
-    // Setting up random device
+    // Setting up random devicew
     mt19937 gen(rd());
     uniform_int_distribution<int> randomInt (1,6); // more values than used to randomize spawn rate
 
-    if (randomInt(gen) == 1) {
+    int spawnRoll = randomInt(gen);
+
+    if (spawnRoll == 1) {
         cout << " ...spawning crashed car" << endl;
         entities.push_back(new CrashedCar(backgroundVelocity));     // new Enemies need the current backgroundVelocity to synchronise with the movement of background
-    } else if (randomInt(gen) == 2) {
-        uniform_real_distribution<float> randomHeight (-60.f, -220.f);     // a new Bird is given a random height
-        float rolledBirdHeight = randomHeight(gen);
-
+    } else if (spawnRoll == 2) {
+        uniform_real_distribution<float> randomHeight (60, 220);     // a new Bird is given a random height
+        float rolledBirdHeight = -randomHeight(gen);
         cout << " ...spawning bird with height of " << rolledBirdHeight << endl;
+
         entities.push_back(new Bird(backgroundVelocity, rolledBirdHeight));
-    } else if (randomInt(gen) == 3) {
+    } else if (spawnRoll == 3) {
         cout << " ...spawning crashed car" << endl;
         entities.push_back(new Wall(backgroundVelocity));     // new Enemies need the current backgroundVelocity to synchronise with the movement of background
     }
